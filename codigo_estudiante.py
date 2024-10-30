@@ -25,8 +25,6 @@ def leer_imagen(ruta_imagen):
         
     return img
 
-#imagen = leer_imagen(r"C:\Users\aleja\Desktop\GitHub Vision por Computador\imagen0.png")
-#imagen = leer_imagen(r"C:\Users\aleja\Desktop\GitHub Vision por Computador\basic-html-colors.png")
 imagen = leer_imagen(r"data/imagen0.png")
 imagen.show()
 
