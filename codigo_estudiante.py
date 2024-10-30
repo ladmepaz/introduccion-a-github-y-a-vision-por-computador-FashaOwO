@@ -21,9 +21,16 @@ def leer_imagen(ruta_imagen):
     img: objeto tipo Image de PIL
     """
     # Abrir la imagen
-    img = None # Insertar código aquí
+    img = Image.open(ruta_imagen) # Insertar código aquí
         
     return img
+
+#imagen = leer_imagen(r"C:\Users\aleja\Desktop\GitHub Vision por Computador\imagen0.png")
+#imagen = leer_imagen(r"C:\Users\aleja\Desktop\GitHub Vision por Computador\basic-html-colors.png")
+imagen = leer_imagen(r"data/imagen0.png")
+imagen.show()
+
+####
 
 def obtener_info_imagen(img):
     """
@@ -41,18 +48,24 @@ def obtener_info_imagen(img):
     # Obtener el número de canales
     modo = img.mode
     if modo == 'L':  # Escala de grises
-        num_canales = None # Ingresa valor aquí
+        num_canales = 1 # Ingresa valor aquí
     elif modo == 'RGB':  # Imagen RGB
-        num_canales = None # Ingresa valor aquí
+        num_canales = 3 # Ingresa valor aquí
     elif modo == 'RGBA':  # Imagen RGBA
-        num_canales = None # Ingresa valor aquí
+        num_canales = 4 # Ingresa valor aquí
     else:
         num_canales = len(modo)  # Otros modos de imagen
     
     # Obtener las dimensiones de la imagen
-    dimensiones = None  # Ingresa valor aquí para obtener (ancho, alto)
+    dimensiones = img.size  # Ingresa valor aquí para obtener (ancho, alto)
     
     return num_canales, dimensiones
+
+num_canales, dimensiones = obtener_info_imagen(imagen)
+print("Número de canales:", num_canales)
+print("Dimensiones:", dimensiones)
+
+####
 
 def imagen_a_arreglo(img):
     """
@@ -65,8 +78,14 @@ def imagen_a_arreglo(img):
     np.ndarray: Arreglo de NumPy con los datos de la imagen.
     """
     # Convertir la imagen a un arreglo de NumPy
-    arreglo = None # Insertar código aquí
+    arreglo = np.array(img) # Insertar código aquí
     return arreglo
+
+arreglo = imagen_a_arreglo(imagen)
+print("Tipo de datos:", type(arreglo))
+print("Forma del arreglo:", arreglo.shape)
+
+####
 
 def estadisticas_intensidad(arreglo_img):
     """
@@ -80,10 +99,15 @@ def estadisticas_intensidad(arreglo_img):
     tuple: (promedio, desviación_estándar) de las intensidades de los píxeles.
     """
     # Calcular el promedio y la desviación estándar
-    promedio = None # Insertar código aquí
-    desviacion_estandar = None # Insertar código aquí
+    promedio = round(np.mean(arreglo_img), 3) # Insertar código aquí
+    desviacion_estandar = round(np.std(arreglo_img), 3) # Insertar código aquí
     
     return promedio, desviacion_estandar
+
+estadisticas1 = estadisticas_intensidad(arreglo)
+print("Estadísticas de intensidad:", estadisticas1)
+
+####
 
 def estadisticas_por_canal(arreglo_img):
     """
@@ -102,8 +126,8 @@ def estadisticas_por_canal(arreglo_img):
     # Verificar el número de dimensiones del arreglo
     if len(arreglo_img.shape) == 2:
         # Imagen de un solo canal
-        promedio = None # Insertar código aquí
-        desviacion_estandar = None # Insertar código aquí
+        promedio = round(np.mean(arreglo_img), 3) # Insertar código aquí
+        desviacion_estandar = round(np.std(arreglo_img), 3) # Insertar código aquí
         resultados = {
             'Canal_1': {
                 'Promedio': promedio,
@@ -115,9 +139,9 @@ def estadisticas_por_canal(arreglo_img):
         resultados = {}
         num_canales = arreglo_img.shape[2]
         
-        for canal in None # Insertar código aquí
-            promedio = np.mean(arreglo_img[:, :, canal])
-            desviacion_estandar = np.std(arreglo_img[:, :, canal])
+        for canal in range(num_canales): # Insertar código aquí
+            promedio = round(np.mean(arreglo_img[:, :, canal]), 3)
+            desviacion_estandar = round(np.std(arreglo_img[:, :, canal]), 3)
             resultados[f'Canal_{canal+1}'] = {
                 'Promedio': promedio,
                 'Desviación Estándar': desviacion_estandar
@@ -126,3 +150,7 @@ def estadisticas_por_canal(arreglo_img):
         raise ValueError("El arreglo de imagen debe tener 2 o 3 dimensiones.")
     
     return resultados
+
+arreglo = imagen_a_arreglo(imagen)
+estadisticas2 = estadisticas_por_canal(arreglo)
+print("Estadísticas de intensidad por canal:", estadisticas2)
